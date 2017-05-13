@@ -1,6 +1,10 @@
 # GT-Nutrition
 Georgia Tech Nutrition project for CS 6440
 
+Note: As the testing Gatech FHIR server did not containt a large enough volume of data to test the visualizations, the code augments FHIR entries with generated entries for mockup purposes. Look in fhirController.js for calls to fetch FHIR resources, as well as configuration for which FHIR server the dashboard responds to.
+
+The client code relies on query parameters to know which practitioner and patient to get information for. Use practitionerId and patientId parameters in the URL. These must be valid on the FHIR server that this app is configured to communicate with.
+
 ## Local Testing
 
 Here's how to set up a local server for testing.
@@ -33,30 +37,6 @@ This will install all of the project's dependencies (listed in Nutrition/package
 `sudo nodemon ./bin/www`
 
 This will run the server on the default port 3001. Go to localhost:3001 in your web browser to view the site you are now hosting. To change the port, open bin/www and change the value 3001. You can now edit files to your heart's content.
-
-## Deployment
-
-Here's how to deploy the current repo on the ec2 server. First you'll need to connect to the ec2 server. Use the pem file in this repo's 'FireServer' folder to ssh in. There are further instructions included, but the command is:
-
-`ssh -i "FireServer.pem" ec2-user@ec2-54-174-111-51.compute-1.amazonaws.com`
-
-Now cd into the project folder on the server:
-
-`cd CS-6440-Nutrition/Nutrition`
-
-Pull the latest changes. Use your gatech credentials:
-
-`git pull`
-
-Install any new dependencies that were added:
-
-`npm install`
-
-Run the server. You'll want to make sure the port in /bin/www is set to 80 before doing so:
-
-`sudo nodemon ./bin/www`
-
-You can now navigate to ec2-54-174-111-51.compute-1.amazonaws.com:80 to see the server's site.
 
 ## NodeJS Structure
 
@@ -106,3 +86,7 @@ However, for nutrition scores (specifically nutrisavings) there were no existing
     }
 }
 ```
+
+In addition there is a 'notes' tab on the dashboard, but unfortunately no clinical note fhir resource in place on the Gatech FHIR server. 
+
+For next steps, we suggest implementing this resource on the FHIR server, and adapting our code to reference it (fhirController.js): http://wiki.hl7.org/index.php?title=ClinicalNote_FHIR_Resource_Proposal
