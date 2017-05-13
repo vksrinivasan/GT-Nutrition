@@ -7,3 +7,5 @@
   curl --silent --location https://rpm.nodesource.com/setup_6.x | sudo bash -	
   sudo yum -y install nodejs
   sudo yum install gcc-c++ make  # native code for faster execution
+  
+3. Checkout this repo and launch the app as if local testing, only now it can be reached externally using the above ec2 url.
