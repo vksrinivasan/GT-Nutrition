@@ -1,4 +1,4 @@
-# CS-6440-Nutrition
+# GT-Nutrition
 Georgia Tech Nutrition project for CS 6440
 
 ## Local Testing
@@ -106,4 +106,3 @@ However, for nutrition scores (specifically nutrisavings) there were no existing
     }
 }
 ```
-# GT-Nutrition
