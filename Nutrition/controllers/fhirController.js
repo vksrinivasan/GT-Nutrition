@@ -7,7 +7,7 @@ var fhir = require('fhir.js');
 
 // Client configuration
 var client = fhir({
-  baseUrl: 'http://polaris.i3l.gatech.edu:8080/fhir-omopv5/base'
+  baseUrl: 'http://hapi.fhir.org/baseDstu2'
   //baseUrl: 'http://fhirtest.uhn.ca/baseDstu2'
   //baseUrl: 'https://api4.hspconsortium.org/nutrition/open'
 });
@@ -33,16 +33,16 @@ function fhirRequest(myType, myQuery, resultsCallback){
       if (resFHIR.message){
         console.log('Error', resFHIR.message);
       }
-    });   
+    });
 }
 
 module.exports = {
- 
+
   // Sends the patient fhir resource
   getPatient: function(req, res, next) {
     // Callback function to clean the results, after we get them from the FHIR request
     var resultsCallback = function(result){
-      res.send(result);  
+      res.send(result);
     }
     fhirRequest("Patient", {'_id': req.query.patientId}, resultsCallback);
   },
@@ -67,7 +67,7 @@ module.exports = {
 
             /*
               If there is a previously saved 'appointment time', we need to decide wether this appointment superseeds it.
-              For example, if someone has an appointment tomorrow and an appointment 6 months from now, we only want to show 
+              For example, if someone has an appointment tomorrow and an appointment 6 months from now, we only want to show
               one: the one tomorrow. We need to display the appointment closest to 'now'.
             */
             if(dates[appPatient]){
@@ -79,14 +79,14 @@ module.exports = {
               if(currentAppDifference < savedAppDifference){
                 dates[appPatient] = appDate;
               }
-            } 
+            }
             else {
               dates[appPatient] = appDate;
             }
           }
           catch(err){
             console.log("Error occured, this may be an invalid resource, skipping...");
-          }  
+          }
         }
 
         if(result.resourceType == 'Patient'){
@@ -97,7 +97,7 @@ module.exports = {
       formattedResults["patients"] = patients;
       formattedResults["dates"] = dates;
 
-      res.send(formattedResults);  
+      res.send(formattedResults);
     }
     //fhirRequest("Appointment", {'practitioner': req.query.practitionerId, 'date' : {$gt: '1970-01-01'}, "_include" : "Appointment:patient"}, resultsCallback);
     fhirRequest("Appointment", {'practitioner': req.query.practitionerId, "_include": "Appointment:patient"}, resultsCallback);
@@ -112,7 +112,7 @@ module.exports = {
       results.forEach(function(result){
         formattedResults.push({"time": result.effectiveDateTime, "weight": result.valueQuantity.value, "unit": result.valueQuantity.unit});
       });
-      res.send(formattedResults);  
+      res.send(formattedResults);
     }
     fhirRequest("Observation", {'patient._id': req.query.patientId, "code": "http://loinc.org|3141-9"}, resultsCallback);
   },
@@ -126,7 +126,7 @@ module.exports = {
       results.forEach(function(result){
         formattedResults.push({"time": result.effectiveDateTime, "respiratory rate": result.valueQuantity.value, "unit": result.valueQuantity.unit});
       });
-      res.send(formattedResults);  
+      res.send(formattedResults);
     }
     fhirRequest("Observation", {'patient._id': req.query.patientId, "code": "http://loinc.org|9279-1"}, resultsCallback);
   },
@@ -140,7 +140,7 @@ module.exports = {
       results.forEach(function(result){
         formattedResults.push({"time": result.effectiveDateTime, "height": result.valueQuantity.value, "unit": result.valueQuantity.unit});
       });
-      res.send(formattedResults);  
+      res.send(formattedResults);
     }
     fhirRequest("Observation", {'patient._id': req.query.patientId, "code": "http://loinc.org|8302-2"}, resultsCallback);
   },
@@ -154,13 +154,13 @@ module.exports = {
       results.forEach(function(result){
         formattedResults.push({"time": result.effectiveDateTime, "HDL": result.valueQuantity.value, "unit": result.valueQuantity.unit});
       });
-      res.send(formattedResults);  
+      res.send(formattedResults);
     }
     fhirRequest("Observation", {'patient._id': req.query.patientId, "code": "http://loinc.org|2085-9"}, resultsCallback);
   },
 
 
-  // Sends an array of LDL readings and times 
+  // Sends an array of LDL readings and times
   // NOTE: Gatech's fhir server doesn't seem to have any records of this... but it is a thing!
   getLDL: function(req, res, next) {
     // Callback function to clean the results, after we get them from the FHIR request
@@ -169,13 +169,13 @@ module.exports = {
       results.forEach(function(result){
         formattedResults.push({"time": result.effectiveDateTime, "LDL": result.valueQuantity.value, "unit": result.valueQuantity.unit});
       });
-      res.send(formattedResults);  
+      res.send(formattedResults);
     }
     fhirRequest("Observation", {'patient._id': req.query.patientId, "code": "http://loinc.org|2089-1"}, resultsCallback);
   },
 
 
-  // Sends an array of LDL readings and times 
+  // Sends an array of LDL readings and times
   getCholesterol: function(req, res, next) {
     // Callback function to clean the results, after we get them from the FHIR request
     var resultsCallback = function(results){
@@ -183,13 +183,13 @@ module.exports = {
       results.forEach(function(result){
         formattedResults.push({"time": result.effectiveDateTime, "cholesterol": result.valueQuantity.value, "unit": result.valueQuantity.unit});
       });
-      res.send(formattedResults);  
+      res.send(formattedResults);
     }
     fhirRequest("Observation", {'patient._id': req.query.patientId, "code": "http://loinc.org|2093-3"}, resultsCallback);
   },
 
 
-  // Sends an array of LDL readings and times 
+  // Sends an array of LDL readings and times
   getHBA1C: function(req, res, next) {
     // Callback function to clean the results, after we get them from the FHIR request
     var resultsCallback = function(results){
@@ -197,13 +197,13 @@ module.exports = {
       results.forEach(function(result){
         formattedResults.push({"time": result.effectiveDateTime, "HBA1C": result.valueQuantity.value, "unit": result.valueQuantity.unit});
       });
-      res.send(formattedResults);  
+      res.send(formattedResults);
     }
     fhirRequest("Observation", {'patient._id': req.query.patientId, "code": "http://loinc.org|4548-4"}, resultsCallback);
   },
 
 
-  // Sends an array of LDL readings and times 
+  // Sends an array of LDL readings and times
   getBloodPH: function(req, res, next) {
     // Callback function to clean the results, after we get them from the FHIR request
     var resultsCallback = function(results){
@@ -213,12 +213,12 @@ module.exports = {
       results.forEach(function(result){
         formattedResults.push({"time": result.effectiveDateTime, "Blood PH": result.valueQuantity.value, "unit": result.valueQuantity.unit});
       });
-      res.send(formattedResults);  
+      res.send(formattedResults);
     }
     fhirRequest("Observation", {'patient._id': req.query.patientId, "code": "http://loinc.org|2744-1"}, resultsCallback);
   },
 
-  // Sends an array of LDL readings and times 
+  // Sends an array of LDL readings and times
   getNotes: function(req, res, next) {
 
     // TODO: implement call to custom FHIR resource. Model after this format? :
@@ -253,7 +253,7 @@ module.exports = {
       },
     ];
 
-    res.send(notes); 
+    res.send(notes);
   }
 
 };
