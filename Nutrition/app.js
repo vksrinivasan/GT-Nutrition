@@ -2,10 +2,11 @@
 var express = require('express');
 var path = require('path');
 var exphbs = require('express-handlebars');
+var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
 var passport = require('passport');
-var LocalStrategy = require('passport-local'),Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -42,6 +43,24 @@ app.use(session({
   secret: 'secret',
   saveUninitialized: true,
   resave: true
+}));
+
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+    var namespace = param.split('.')
+    , root = namespace.shift()
+    , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']'
+    }
+
+    return {
+      param : formParam,
+      msg : msg,
+      value : value
+    };
+  }
 }));
 
 app.use(passport.initialize());

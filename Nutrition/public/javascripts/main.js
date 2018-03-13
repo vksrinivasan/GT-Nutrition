@@ -4,18 +4,18 @@ var patientId = getParameterByName("patientId");
 var practitionerId = getParameterByName("practitionerId");
 
 $(document).ready(function() {
-  highlightActiveNav();   
+  highlightActiveNav();
   $("#patients-link").attr("href", "/patients?practitionerId=" + practitionerId + "&patientId=" + patientId);
   $("#summary-link").attr("href", "/summary?practitionerId=" + practitionerId + "&patientId=" + patientId);
   $("#notes-link").attr("href", "/notes?practitionerId=" + practitionerId + "&patientId=" + patientId);
-  
+
 });
 
 
 // Highlight icon for current page in navbar
 function highlightActiveNav(){
   $('li.active').removeClass('active');
-  $('a[href="' + location.pathname + '"]').closest('li').addClass('active');  
+  $('a[href="' + location.pathname + '"]').closest('li').addClass('active');
 }
 
 

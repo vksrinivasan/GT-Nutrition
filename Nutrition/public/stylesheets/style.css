@@ -22,7 +22,7 @@ h4{
 }
 
 body {
-  margin-top: 65px;
+  margin-top: 0px;
   padding-top: 2rem;
   background-color: #2196f3;
 }
@@ -231,4 +231,8 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+footer{
+  margin-top:40px;
 }
