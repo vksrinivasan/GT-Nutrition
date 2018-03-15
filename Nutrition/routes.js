@@ -7,7 +7,7 @@ var fhirController = require('./controllers/fhirController');
 
 // Index Routes
 
-app.get('/patients', indexController.patients);
+// app.get('/patients', indexController.patients);
 app.get('/summary', indexController.summary);
 app.get('/history', indexController.history);
 app.get('/nutrients', indexController.nutrients);

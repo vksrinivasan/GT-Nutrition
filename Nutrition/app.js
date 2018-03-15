@@ -16,6 +16,7 @@ var http = require('http');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+
 /* Initialize app */
 var app = module.exports = express();
 
@@ -45,34 +46,11 @@ app.use(session({
   resave: true
 }));
 
-app.use(expressValidator({
-  errorFormatter: function(param, msg, value) {
-    var namespace = param.split('.')
-    , root = namespace.shift()
-    , formParam = root;
-
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']'
-    }
-
-    return {
-      param : formParam,
-      msg : msg,
-      value : value
-    };
-  }
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use(flash());
 
-/* Global Variables For Flash Messages */
+/* Globals */
 app.use(function (req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
+  res.locals.authenticated = false;
   next();
 });
 
@@ -82,4 +60,4 @@ app.use('/users', users);
 module.exports.app = app;
 
 // Add routing
-// routes = require('./routes');
+var existing = require('./routes');
